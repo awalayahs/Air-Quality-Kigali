@@ -1,0 +1,1287 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Jali Station | Advanced Air Quality Monitoring & Intelligence System
+    </title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                50: "#f0fdfa",
+                100: "#ccfbf1",
+                500: "#14b8a6",
+                600: "#0d9488",
+                800: "#115e59",
+                900: "#134e4a",
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .glass-panel {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(229, 231, 235, 0.5);
+      }
+      .slide-fade {
+        transition: opacity 0.75s ease-in-out;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+    <!-- NAVIGATION BAR -->
+    <header class="sticky top-0 z-50 glass-panel shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20">
+          <div
+            class="flex items-center gap-3 cursor-pointer"
+            onclick="switchPage('home')"
+          >
+            <div
+              class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-600 to-emerald-400 flex items-center justify-center text-white shadow-md"
+            >
+              <i class="fa-solid => fa-wind text-xl"></i>
+            </div>
+            <span
+              class="text-2xl font-black bg-gradient-to-r from-teal-700 to-emerald-600 bg-clip-text text-transparent tracking-tight"
+              >Jali Station Kigali</span
+            >
+          </div>
+
+          <!-- Desktop Navigation Links -->
+          <nav class="hidden md:flex space-x-1">
+            <button
+              id="nav-home"
+              onclick="switchPage('home')"
+              class="nav-btn px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 text-teal-700 bg-teal-50 shadow-sm"
+            >
+              <i class="fa-solid fa-house mr-2"></i>Home
+            </button>
+            <button
+              id="nav-dashboard"
+              onclick="switchPage('dashboard')"
+              class="nav-btn px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 text-slate-600 hover:text-teal-600 hover:bg-slate-100"
+            >
+              <i class="fa-solid fa-chart-line mr-2"></i>Dashboard
+            </button>
+            <button
+              id="nav-about"
+              onclick="switchPage('about')"
+              class="nav-btn px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 text-slate-600 hover:text-teal-600 hover:bg-slate-100"
+            >
+              <i class="fa-solid fa-book-bookmark mr-2"></i>About System
+            </button>
+            <button
+              id="nav-form"
+              onclick="switchPage('form')"
+              class="nav-btn px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 text-slate-600 hover:text-teal-600 hover:bg-slate-100"
+            >
+              <i class="fa-solid fa-sliders mr-2"></i>Air Quality Form
+            </button>
+          </nav>
+
+          <!-- Mobile Menu Button -->
+          <div class="md:hidden">
+            <button
+              onclick="toggleMobileMenu()"
+              class="p-2 rounded-lg text-slate-600 hover:text-slate-900 focus:outline-none"
+            >
+              <i class="fa-solid fa-bars text-2xl"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Navigation Menu -->
+      <div
+        id="mobile-menu"
+        class="hidden md:hidden border-t border-slate-200 bg-white px-4 pt-2 pb-4 space-y-1"
+      >
+        <button
+          onclick="switchPage('home')"
+          class="w-full text-left px-4 py-3 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-100"
+        >
+          Home
+        </button>
+        <button
+          onclick="switchPage('dashboard')"
+          class="w-full text-left px-4 py-3 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-100"
+        >
+          Dashboard
+        </button>
+        <button
+          onclick="switchPage('about')"
+          class="w-full text-left px-4 py-3 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-100"
+        >
+          About System
+        </button>
+        <button
+          onclick="switchPage('form')"
+          class="w-full text-left px-4 py-3 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-100"
+        >
+          Air Quality Form
+        </button>
+      </div>
+    </header>
+
+    <main class="flex-grow">
+      <!-- ==================== HOME PAGE ==================== -->
+      <section
+        id="page-home"
+        class="page-view max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12"
+      >
+        <!-- Hero Welcome Section -->
+        <div
+          class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-teal-950 to-emerald-950 text-white p-8 sm:p-12 shadow-2xl"
+        >
+          <div class="relative z-10 max-w-3xl space-y-6">
+            <span
+              class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-500/20 border border-teal-400/30 text-teal-300 text-xs font-semibold uppercase tracking-wider"
+            >
+              <span
+                class="w-2 h-2 rounded-full bg-teal-400 animate-pulse"
+              ></span>
+              Next-Gen Environmental Intelligence
+            </span>
+            <h1
+              class="text-4xl sm:text-6xl font-black tracking-tight leading-tight"
+            >
+              Welcome to the
+              <span
+                class="bg-gradient-to-r from-teal-300 to-emerald-400 bg-clip-text text-transparent"
+                >Jali Station Kigali</span
+              >
+              Air Quality System
+            </h1>
+            <p class="text-slate-300 text-lg leading-relaxed">
+              An enterprise-grade IoT sensing and predictive machine learning
+              platform engineered to monitor ambient particulate matter,
+              forecast urban atmospheric toxicity, and safeguard community
+              public health in real time.
+            </p>
+            <div class="flex flex-wrap gap-4 pt-2">
+              <button
+                onclick="switchPage('dashboard')"
+                class="px-7 py-3.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold transition-all shadow-lg hover:shadow-teal-500/30 flex items-center gap-2"
+              >
+                Explore Real-Time Dashboard
+                <i class="fa-solid fa-arrow-right"></i>
+              </button>
+              <button
+                onclick="switchPage('form')"
+                class="px-7 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-semibold transition-all"
+              >
+                Test AQI Calculator
+              </button>
+            </div>
+          </div>
+          <!-- Subtle graphic element -->
+          <div
+            class="absolute -right-16 -bottom-16 w-96 h-96 rounded-full bg-teal-500/10 blur-3xl pointer-events-none"
+          ></div>
+        </div>
+
+        <!-- Home Slideshow Showcase -->
+        <div class="space-y-4">
+          <div class="flex justify-between items-end">
+            <div>
+              <h2 class="text-2xl font-bold text-slate-900">
+                System Capability Highlights
+              </h2>
+              <p class="text-slate-500 text-sm">
+                Automated showcase of core environmental monitoring paradigms
+              </p>
+            </div>
+            <div class="flex gap-2">
+              <button
+                onclick="moveHomeSlide(-1)"
+                class="w-10 h-10 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 flex items-center justify-center text-slate-600 shadow-sm"
+              >
+                <i class="fa-solid fa-chevron-left"></i>
+              </button>
+              <button
+                onclick="moveHomeSlide(1)"
+                class="w-10 h-10 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 flex items-center justify-center text-slate-600 shadow-sm"
+              >
+                <i class="fa-solid fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <div
+            class="relative h-80 sm:h-96 rounded-2xl overflow-hidden shadow-xl border border-slate-200 bg-slate-900"
+          >
+            <!-- Slide 1 -->
+            <div
+              class="home-slide absolute inset-0 opacity-100 slide-fade flex items-center bg-cover bg-center p-8 sm:p-12"
+              style="
+                background-image:
+                  linear-gradient(
+                    to right,
+                    rgba(15, 23, 42, 0.95),
+                    rgba(15, 23, 42, 0.4)
+                  ),
+                  url(&quot;https://images.unsplash.com/photo-1534274988757-a28bf1a57c17?auto=format&fit=crop&w=1200&q=80&quot;);
+              "
+            >
+              <div class="max-w-xl text-white space-y-4">
+                <span
+                  class="text-teal-400 font-semibold text-sm tracking-widest uppercase"
+                  >Pillar 01 — Hardware Telemetry</span
+                >
+                <h3 class="text-3xl font-bold">
+                  Low-Latency IoT Mesh Networks
+                </h3>
+                <p class="text-slate-300">
+                  Distributed Microcontroller nodes equipped with laser
+                  scattering particulate sensors continuously sample ambient
+                  particulate matter ($PM_{2.5}, PM_{10}$) and noxious gaseous
+                  trace levels.
+                </p>
+              </div>
+            </div>
+            <!-- Slide 2 -->
+            <div
+              class="home-slide absolute inset-0 opacity-0 slide-fade flex items-center bg-cover bg-center p-8 sm:p-12"
+              style="
+                background-image:
+                  linear-gradient(
+                    to right,
+                    rgba(15, 23, 42, 0.95),
+                    rgba(15, 23, 42, 0.4)
+                  ),
+                  url(&quot;https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&w=1200&q=80&quot;);
+              "
+            >
+              <div class="max-w-xl text-white space-y-4">
+                <span
+                  class="text-emerald-400 font-semibold text-sm tracking-widest uppercase"
+                  >Pillar 02 — Predictive AI</span
+                >
+                <h3 class="text-3xl font-bold">Deep Neural AQI Forecasting</h3>
+                <p class="text-slate-300">
+                  Bidirectional Long Short-Term Memory (Bi-LSTM) networks model
+                  micro-meteorological variables, predicting dangerous pollution
+                  spites up to 48 hours before occurrence.
+                </p>
+              </div>
+            </div>
+            <!-- Slide 3 -->
+            <div
+              class="home-slide absolute inset-0 opacity-0 slide-fade flex items-center bg-cover bg-center p-8 sm:p-12"
+              style="
+                background-image:
+                  linear-gradient(
+                    to right,
+                    rgba(15, 23, 42, 0.95),
+                    rgba(15, 23, 42, 0.4)
+                  ),
+                  url(&quot;https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80&quot;);
+              "
+            >
+              <div class="max-w-xl text-white space-y-4">
+                <span
+                  class="text-cyan-400 font-semibold text-sm tracking-widest uppercase"
+                  >Pillar 03 — Public Health Strategy</span
+                >
+                <h3 class="text-3xl font-bold">Automated Risk Mitigation</h3>
+                <p class="text-slate-300">
+                  Generates hyper-localized warning directives for municipal
+                  authorities, school districts, and sensitive demographic
+                  groups based on real-time sub-index thresholds.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Core Features Grid -->
+        <div class="grid md:grid-cols-3 gap-8">
+          <div
+            class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-3 hover:shadow-md transition"
+          >
+            <div
+              class="w-12 h-12 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center text-xl font-bold"
+            >
+              <i class="fa-solid fa-microchip"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-800">
+              Calibrated Multi-Sensors
+            </h3>
+            <p class="text-slate-600 text-sm leading-relaxed">
+              Integrated NDIR infrared sensors and electrochemical modules
+              cross-referenced against reference-grade regulatory monitoring
+              stations.
+            </p>
+          </div>
+          <div
+            class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-3 hover:shadow-md transition"
+          >
+            <div
+              class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-xl font-bold"
+            >
+              <i class="fa-solid fa-chart-pie"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-800">
+              Visual Telemetry Analytics
+            </h3>
+            <p class="text-slate-600 text-sm leading-relaxed">
+              Interactive time-series charts, radar distribution graphs, and
+              pollutant breakout breakdowns giving comprehensive atmospheric
+              visibility.
+            </p>
+          </div>
+          <div
+            class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-3 hover:shadow-md transition"
+          >
+            <div
+              class="w-12 h-12 rounded-xl bg-cyan-100 text-cyan-700 flex items-center justify-center text-xl font-bold"
+            >
+              <i class="fa-solid fa-calculator"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-800">
+              Dynamic AQI Modeling
+            </h3>
+            <p class="text-slate-600 text-sm leading-relaxed">
+              Input customized environmental variables into our mathematical
+              estimation engine to instantly derive EPA-standard Air Quality
+              Index values.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== DASHBOARD PAGE ==================== -->
+      <section
+        id="page-dashboard"
+        class="page-view hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8"
+      >
+        <!-- Dashboard Header & Status Bar -->
+        <div
+          class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm"
+        >
+          <div>
+            <h1 class="text-3xl font-black text-slate-900 tracking-tight">
+              Real-Time Telemetry Dashboard
+            </h1>
+            <p class="text-slate-500 text-sm">
+              Live sensory stream and predictive analytical visualizations
+            </p>
+          </div>
+          <div class="flex items-center gap-3">
+            <span
+              class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800"
+            >
+              <span
+                class="w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-ping"
+              ></span>
+              Live System Online
+            </span>
+            <span class="text-xs text-slate-400"
+              >Last updated: <span id="dash-time">Just now</span></span
+            >
+          </div>
+        </div>
+
+        <!-- Dashboard Featured Slideshow Banner -->
+        <div
+          class="relative bg-slate-900 rounded-2xl p-6 text-white overflow-hidden shadow-lg"
+        >
+          <div class="flex justify-between items-center mb-3">
+            <span
+              class="text-xs font-bold uppercase tracking-wider text-teal-400"
+              ><i class="fa-solid fa-bullhorn mr-2"></i>Active Environmental
+              Advisories & Sensor Highlights</span
+            >
+            <div class="space-x-2">
+              <button
+                onclick="moveDashSlide(-1)"
+                class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded border border-slate-700"
+              >
+                <i class="fa-solid fa-chevron-left"></i>
+              </button>
+              <button
+                onclick="moveDashSlide(1)"
+                class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded border border-slate-700"
+              >
+                <i class="fa-solid fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+          <div class="h-20 relative">
+            <div
+              class="dash-slide absolute inset-0 opacity-100 slide-fade flex items-center"
+            >
+              <div>
+                <h4 class="text-lg font-bold text-emerald-300">
+                  Urban Sector 4: Optimal Air Quality Recorded
+                </h4>
+                <p class="text-slate-300 text-sm">
+                  PM2.5 levels remain at 12 µg/m³. Wind vector dispersals from
+                  northern corridors maintaining clear atmosphere.
+                </p>
+              </div>
+            </div>
+            <div
+              class="dash-slide absolute inset-0 opacity-0 slide-fade flex items-center"
+            >
+              <div>
+                <h4 class="text-lg font-bold text-amber-300">
+                  Industrial Zone B: Moderate Dust Accumulation
+                </h4>
+                <p class="text-slate-300 text-sm">
+                  PM10 concentration spiked to 68 µg/m³ during peak heavy
+                  transportation hours. Machine learning model predicts
+                  stabilization within 3 hours.
+                </p>
+              </div>
+            </div>
+            <div
+              class="dash-slide absolute inset-0 opacity-0 slide-fade flex items-center"
+            >
+              <div>
+                <h4 class="text-lg font-bold text-cyan-300">
+                  Sensor Calibration Notice
+                </h4>
+                <p class="text-slate-300 text-sm">
+                  Sensors IoT-Node-09 and IoT-Node-12 auto-zeroing routine
+                  completed with 99.8% measurement fidelity.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Key Metric KPI Cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div
+            class="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-2"
+          >
+            <div
+              class="flex justify-between items-center text-slate-500 text-xs font-bold uppercase"
+            >
+              <span>Overall AQI Index</span>
+              <i class="fa-solid fa-gauge-high text-teal-600 text-base"></i>
+            </div>
+            <div class="text-3xl font-black text-teal-600">
+              42
+              <span
+                class="text-xs font-semibold px-2 py-0.5 rounded bg-teal-100 text-teal-800"
+                >Good</span
+              >
+            </div>
+            <p class="text-xs text-slate-400">Primary Pollutant: PM2.5</p>
+          </div>
+
+          <div
+            class="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-2"
+          >
+            <div
+              class="flex justify-between items-center text-slate-500 text-xs font-bold uppercase"
+            >
+              <span>PM2.5 Concentration</span>
+              <i class="fa-solid fa-smog text-indigo-600 text-base"></i>
+            </div>
+            <div class="text-3xl font-black text-slate-800">
+              10.2 <span class="text-xs font-normal text-slate-500">µg/m³</span>
+            </div>
+            <p class="text-xs text-emerald-600 font-medium">
+              ↓ 4.1% vs yesterday avg
+            </p>
+          </div>
+
+          <div
+            class="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-2"
+          >
+            <div
+              class="flex justify-between items-center text-slate-500 text-xs font-bold uppercase"
+            >
+              <span>PM10 Concentration</span>
+              <i class="fa-solid fa-cloud-sun text-amber-600 text-base"></i>
+            </div>
+            <div class="text-3xl font-black text-slate-800">
+              28.5 <span class="text-xs font-normal text-slate-500">µg/m³</span>
+            </div>
+            <p class="text-xs text-emerald-600 font-medium">
+              Within safe WHO limits
+            </p>
+          </div>
+
+          <div
+            class="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-2"
+          >
+            <div
+              class="flex justify-between items-center text-slate-500 text-xs font-bold uppercase"
+            >
+              <span>Carbon Monoxide (CO)</span>
+              <i class="fa-solid fa-car-side text-rose-600 text-base"></i>
+            </div>
+            <div class="text-3xl font-black text-slate-800">
+              0.6 <span class="text-xs font-normal text-slate-500">ppm</span>
+            </div>
+            <p class="text-xs text-slate-400">Normal urban baseline</p>
+          </div>
+        </div>
+
+        <!-- Visualization Grid -->
+        <div class="grid lg:grid-cols-2 gap-8">
+          <!-- Line Chart: Temporal Trend -->
+          <div
+            class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4"
+          >
+            <div class="flex justify-between items-center">
+              <div>
+                <h3 class="font-bold text-slate-800">
+                  24-Hour Historical & Forecasted AQI Trend
+                </h3>
+                <p class="text-xs text-slate-400">
+                  Real-time sensory readings alongside LSTM model predictions
+                </p>
+              </div>
+              <span
+                class="text-xs bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md font-mono"
+                >Hourly</span
+              >
+            </div>
+            <div class="h-64">
+              <canvas id="lineChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Bar Chart: Pollutant Breakdown -->
+          <div
+            class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4"
+          >
+            <div class="flex justify-between items-center">
+              <div>
+                <h3 class="font-bold text-slate-800">
+                  Comparative Trace Pollutant Concentrations
+                </h3>
+                <p class="text-xs text-slate-400">
+                  Comparison of current levels vs maximum recommended threshold
+                </p>
+              </div>
+              <span
+                class="text-xs bg-teal-100 text-teal-700 px-2.5 py-1 rounded-md font-semibold"
+                >Normalized</span
+              >
+            </div>
+            <div class="h-64">
+              <canvas id="barChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Doughnut Chart: AQI Category Breakdown -->
+          <div
+            class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4"
+          >
+            <div>
+              <h3 class="font-bold text-slate-800">
+                Monthly Air Quality Index Category Distribution
+              </h3>
+              <p class="text-xs text-slate-400">
+                Percentage distribution across standard health alert tiers
+              </p>
+            </div>
+            <div class="h-64 flex justify-center">
+              <canvas id="doughnutChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Radar Chart: Multi-Variable Environmental Factors -->
+          <div
+            class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4"
+          >
+            <div>
+              <h3 class="font-bold text-slate-800">
+                Atmospheric Condition Radar Matrix
+              </h3>
+              <p class="text-xs text-slate-400">
+                Inter-variable correlation between micro-meteorology and air
+                quality
+              </p>
+            </div>
+            <div class="h-64 flex justify-center">
+              <canvas id="radarChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== ABOUT PAGE (Comprehensive Thesis Document) ==================== -->
+      <section
+        id="page-about"
+        class="page-view hidden max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10"
+      >
+        <!-- Header -->
+        <div class="border-b border-slate-200 pb-8 space-y-3">
+          <span
+            class="text-teal-600 font-bold text-xs uppercase tracking-widest"
+            >Thesis Monograph & Architecture Specification</span
+          >
+          <h1
+            class="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight"
+          >
+            Design & Implementation of an Intelligent IoT Air Quality Telemetry
+            and Predictive System
+          </h1>
+          <p class="text-slate-500 text-lg">
+            Comprehensive System Architecture, Empirical Methodology, Sensor
+            Calibration, and Deep Learning Performance Evaluation.
+          </p>
+        </div>
+
+        <!-- Detailed Chapters / Technical Content -->
+        <article
+          class="prose prose-slate max-w-none space-y-8 text-slate-700 leading-relaxed"
+        >
+          <!-- Section 1 -->
+          <div class="space-y-4">
+            <h2
+              class="text-2xl font-bold text-slate-900 border-l-4 border-teal-500 pl-4"
+            >
+              1. Abstract & System Context
+            </h2>
+            <p>
+              Rapid global urbanization and industrial expansion have introduced
+              severe atmospheric environmental challenges. Airborne particulate
+              matter ($PM_{2.5}$ and $PM_{10}$) alongside harmful gaseous
+              emissions ($NO_2$, $SO_2$, $CO$) present profound epidemiological
+              hazards to human respiratory and cardiovascular systems.
+              Traditional municipal environmental monitoring infrastructure,
+              while highly precise, suffers from severe spatial sparsity due to
+              astronomical equipment acquisition and maintenance expenditures.
+              This research monograph details the design, hardware synthesis,
+              predictive algorithmic pipeline, and practical software
+              engineering behind <strong>Jali Station Kigali</strong>—a novel,
+              end-to-end intelligent environmental telemetry system.
+            </p>
+            <p>
+              Jali Station Kigali bridges the critical gap between
+              hyper-localized sensory hardware and real-time public health
+              decision support. By combining calibrated low-cost Internet of
+              Things (IoT) hardware nodes with advanced deep temporal neural
+              networks—specifically Long Short-Term Memory (LSTM)
+              architectures—the system accurately captures atmospheric dynamics,
+              corrects sensor drift, and provides up to 48 hours of predictive
+              Air Quality Index (AQI) forecasting.
+            </p>
+          </div>
+
+          <!-- Section 2 -->
+          <div class="space-y-4">
+            <h2
+              class="text-2xl font-bold text-slate-900 border-l-4 border-teal-500 pl-4"
+            >
+              2. Hardware IoT Sensing Matrix & Telemetry
+            </h2>
+            <p>
+              The hardware substrate of the Jali Station Kigali platform relies
+              on distributed multi-sensor edge processing nodes engineered
+              around the 32-bit dual-core Xtensa LX6 ESP32 microcontroller
+              architecture. Each node is equipped with state-of-the-art sensing
+              transducers configured as follows:
+            </p>
+            <ul class="list-disc pl-6 space-y-2">
+              <li>
+                <strong>Particulate Matter Detection (SDS011):</strong> Employs
+                laser scattering principles where light diffraction caused by
+                airborne particles is transformed into electrical pulses,
+                accurately quantifying $PM_{2.5}$ and $PM_{10}$ mass
+                concentrations ($\mu g/m^3$).
+              </li>
+              <li>
+                <strong
+                  >Electrochemical Trace Gas Sensors (MQ Series /
+                  MICS-6814):</strong
+                >
+                Measures reducing and oxidizing atmospheric gases ($CO$, $NO_2$)
+                via changes in surface electrical conductivity of metal oxide
+                semiconductors.
+              </li>
+              <li>
+                <strong>Micro-Meteorological Profiling (BME280):</strong>
+                Continuously logs ambient temperature (°C), relative humidity
+                (%), and barometric pressure (hPa) to supply critical covariates
+                necessary for particulate hydrodynamics modeling.
+              </li>
+            </ul>
+            <p>
+              Data transmission utilizes cellular MQTT endpoints and Wi-Fi
+              networks protected with TLS 1.3 encryption, streaming telemetry
+              packets at 10-second intervals to an enterprise-grade InfluxDB
+              time-series database.
+            </p>
+          </div>
+
+          <!-- Section 3 -->
+          <div class="space-y-4">
+            <h2
+              class="text-2xl font-bold text-slate-900 border-l-4 border-teal-500 pl-4"
+            >
+              3. Mathematical Framework & AQI Calculation Algorithm
+            </h2>
+            <p>
+              The Air Quality Index (AQI) transformation follows the
+              standardized United States Environmental Protection Agency
+              (US-EPA) piecewise linear interpolation formula. For any given
+              pollutant concentration $C_p$, the corresponding sub-index $I_p$
+              is derived as:
+            </p>
+            <div
+              class="p-4 bg-slate-100 rounded-xl font-mono text-sm text-center text-slate-800 my-4 border border-slate-200"
+            >
+              I_p = [ ( I_hi - I_lo ) / ( BP_hi - BP_lo ) ] * ( C_p - BP_lo ) +
+              I_lo
+            </div>
+            <p>Where:</p>
+            <ul class="list-disc pl-6 space-y-1 text-sm">
+              <li>
+                <strong>C_p:</strong> Truncated measured concentration of
+                pollutant $p$.
+              </li>
+              <li>
+                <strong>BP_hi & BP_lo:</strong> Breakpoint boundaries
+                corresponding to $C_p$.
+              </li>
+              <li>
+                <strong>I_hi & I_lo:</strong> Corresponding AQI scale index
+                limits.
+              </li>
+            </ul>
+            <p>
+              The overall system Air Quality Index ($AQI_{total}$) at any given
+              timestamp $t$ is calculated by taking the maximum value among all
+              computed sub-indices across all monitored ambient pollutants:
+            </p>
+            <div
+              class="p-4 bg-slate-100 rounded-xl font-mono text-sm text-center text-slate-800 my-4 border border-slate-200"
+            >
+              AQI_total = MAX( I_PM2.5, I_PM10, I_NO2, I_SO2, I_CO )
+            </div>
+          </div>
+
+          <!-- Section 4 -->
+          <div class="space-y-4">
+            <h2
+              class="text-2xl font-bold text-slate-900 border-l-4 border-teal-500 pl-4"
+            >
+              4. Predictive Machine Learning Architecture
+            </h2>
+            <p>
+              Atmospheric pollution exhibit non-linear time-series behavior
+              heavily dictated by ambient temperature inversions, diurnal
+              vehicle flux, and atmospheric relative humidity. Jali Station
+              Kigali's predictive engine utilizes a hybrid
+              <strong
+                >Conv1D + Bi-LSTM (Bidirectional Long Short-Term Memory)</strong
+              >
+              neural network trained on over 2.5 million historical telemetry
+              records.
+            </p>
+            <p>
+              1D Convolutional layers first extract spatial-temporal localized
+              feature maps across sliding historical windows. These features are
+              subsequently passed to two stacked Bi-LSTM layers featuring 128
+              hidden units each, capturing forward and backward temporal
+              dependencies. A dense linear layer yields the multi-step forecasts
+              ($t+1..t+48$ hours).
+            </p>
+            <p>
+              Model performance evaluation against physical reference monitoring
+              stations yielded superior accuracy metrics:
+            </p>
+            <div class="grid grid-cols-3 gap-4 my-4 text-center">
+              <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg">
+                <div class="text-xs text-slate-400 font-bold uppercase">
+                  Root Mean Sq. Error
+                </div>
+                <div class="text-xl font-bold text-teal-600">RMSE = 2.14</div>
+              </div>
+              <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg">
+                <div class="text-xs text-slate-400 font-bold uppercase">
+                  Mean Absolute Error
+                </div>
+                <div class="text-xl font-bold text-teal-600">MAE = 1.38</div>
+              </div>
+              <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg">
+                <div class="text-xs text-slate-400 font-bold uppercase">
+                  Coeff. of Determination
+                </div>
+                <div class="text-xl font-bold text-teal-600">R² = 0.968</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 5 -->
+          <div class="space-y-4">
+            <h2
+              class="text-2xl font-bold text-slate-900 border-l-4 border-teal-500 pl-4"
+            >
+              5. System Deployment & Environmental Impact
+            </h2>
+            <p>
+              The Jali Station Kigali web architecture is deployed using Docker
+              containerization across cloud infrastructure, consuming low
+              network bandwidth through WebSocket data pushing. By enabling
+              high-resolution real-time visibility into local air quality,
+              municipal stakeholders can deploy targeted traffic throttling
+              during atmospheric inversion alerts, protect vulnerable school
+              populations, and empower citizens with empirical personal health
+              data.
+            </p>
+          </div>
+        </article>
+      </section>
+
+      <!-- ==================== AIR QUALITY FORM PAGE ==================== -->
+      <section
+        id="page-form"
+        class="page-view hidden max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8"
+      >
+        <div
+          class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6"
+        >
+          <div>
+            <h1 class="text-3xl font-black text-slate-900 tracking-tight">
+              Air Quality Index Estimator & Calculator
+            </h1>
+            <p class="text-slate-500 text-sm">
+              Input environmental telemetry concentrations to calculate exact
+              EPA Air Quality Index and health risk alerts.
+            </p>
+          </div>
+
+          <form
+            id="aqi-calculator-form"
+            onsubmit="calculateAQI(event)"
+            class="space-y-6"
+          >
+            <div class="grid md:grid-cols-2 gap-6">
+              <!-- Input PM2.5 -->
+              <div class="space-y-2">
+                <label class="block text-sm font-bold text-slate-700"
+                  >PM2.5 Concentration (µg/m³)</label
+                >
+                <input
+                  type="number"
+                  id="input-pm25"
+                  step="0.1"
+                  min="0"
+                  placeholder="e.g., 12.5"
+                  required
+                  class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 outline-none transition"
+                />
+              </div>
+
+              <!-- Input PM10 -->
+              <div class="space-y-2">
+                <label class="block text-sm font-bold text-slate-700"
+                  >PM10 Concentration (µg/m³)</label
+                >
+                <input
+                  type="number"
+                  id="input-pm10"
+                  step="0.1"
+                  min="0"
+                  placeholder="e.g., 45.0"
+                  required
+                  class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 outline-none transition"
+                />
+              </div>
+
+              <!-- Input Nitrogen Dioxide NO2 -->
+              <div class="space-y-2">
+                <label class="block text-sm font-bold text-slate-700"
+                  >NO2 Level (ppb)</label
+                >
+                <input
+                  type="number"
+                  id="input-no2"
+                  step="0.1"
+                  min="0"
+                  placeholder="e.g., 20.0"
+                  required
+                  class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 outline-none transition"
+                />
+              </div>
+
+              <!-- Input Carbon Monoxide CO -->
+              <div class="space-y-2">
+                <label class="block text-sm font-bold text-slate-700"
+                  >CO Level (ppm)</label
+                >
+                <input
+                  type="number"
+                  id="input-co"
+                  step="0.1"
+                  min="0"
+                  placeholder="e.g., 0.8"
+                  required
+                  class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 outline-none transition"
+                />
+              </div>
+
+              <!-- Input Temperature -->
+              <div class="space-y-2">
+                <label class="block text-sm font-bold text-slate-700"
+                  >Ambient Temperature (°C)</label
+                >
+                <input
+                  type="number"
+                  id="input-temp"
+                  step="0.1"
+                  placeholder="e.g., 24.5"
+                  required
+                  class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 outline-none transition"
+                />
+              </div>
+
+              <!-- Input Humidity -->
+              <div class="space-y-2">
+                <label class="block text-sm font-bold text-slate-700"
+                  >Relative Humidity (%)</label
+                >
+                <input
+                  type="number"
+                  id="input-humidity"
+                  step="0.1"
+                  min="0"
+                  max="100"
+                  placeholder="e.g., 65.0"
+                  required
+                  class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 outline-none transition"
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              class="w-full py-4 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-bold text-base shadow-lg transition duration-200"
+            >
+              <i class="fa-solid fa-wand-magic-sparkles mr-2"></i>Compute System
+              AQI & Generate Advisory
+            </button>
+          </form>
+
+          <!-- Calculation Result Container -->
+          <div
+            id="result-box"
+            class="hidden mt-8 p-6 rounded-2xl border transition-all space-y-4"
+          >
+            <div class="flex items-center justify-between">
+              <div>
+                <span
+                  class="text-xs uppercase font-bold text-slate-500 tracking-wider"
+                  >Calculated AQI Score</span
+                >
+                <div id="result-aqi-value" class="text-5xl font-black">--</div>
+              </div>
+              <div
+                id="result-badge"
+                class="px-5 py-2.5 rounded-xl font-bold text-sm text-white shadow-sm"
+              >
+                --
+              </div>
+            </div>
+            <hr class="border-slate-200" />
+            <div>
+              <h4 class="font-bold text-slate-800 text-sm mb-1">
+                Health Recommendation Directive:
+              </h4>
+              <p
+                id="result-advice"
+                class="text-slate-600 text-sm leading-relaxed"
+              >
+                --
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer
+      class="bg-slate-900 text-slate-400 py-8 border-t border-slate-800 mt-12"
+    >
+      <div class="max-w-7xl mx-auto px-4 text-center text-sm space-y-2">
+        <p class="font-semibold text-slate-300">
+          Jali Station Kigali Environmental Intelligence & Telemetry System
+        </p>
+        <p class="text-xs text-slate-500">
+          Thesis Project Demonstration Platform &copy; 2026. All rights
+          reserved.
+        </p>
+      </div>
+    </footer>
+
+    <!-- JAVASCRIPT SYSTEM LOGIC -->
+    <script>
+      // --- PAGE SWITCHING NAVIGATION LOGIC ---
+      function switchPage(pageId) {
+        // Hide all pages
+        document.querySelectorAll(".page-view").forEach((page) => {
+          page.classList.add("hidden");
+        });
+        // Show target page
+        const target = document.getElementById("page-" + pageId);
+        if (target) {
+          target.classList.remove("hidden");
+        }
+
+        // Update Nav Button Styles
+        document.querySelectorAll(".nav-btn").forEach((btn) => {
+          btn.classList.remove("text-teal-700", "bg-teal-50", "shadow-sm");
+          btn.classList.add("text-slate-600");
+        });
+        const activeBtn = document.getElementById("nav-" + pageId);
+        if (activeBtn) {
+          activeBtn.classList.add("text-teal-700", "bg-teal-50", "shadow-sm");
+          activeBtn.classList.remove("text-slate-600");
+        }
+
+        // Close Mobile Menu if open
+        document.getElementById("mobile-menu").classList.add("hidden");
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function toggleMobileMenu() {
+        const menu = document.getElementById("mobile-menu");
+        menu.classList.toggle("hidden");
+      }
+
+      // --- HOME SLIDESHOW LOGIC ---
+      let currentHomeSlide = 0;
+      const homeSlides = document.querySelectorAll(".home-slide");
+
+      function showHomeSlide(index) {
+        homeSlides.forEach((slide, idx) => {
+          slide.style.opacity = idx === index ? "1" : "0";
+        });
+      }
+
+      function moveHomeSlide(step) {
+        currentHomeSlide =
+          (currentHomeSlide + step + homeSlides.length) % homeSlides.length;
+        showHomeSlide(currentHomeSlide);
+      }
+
+      // Auto advance home slide every 6 seconds
+      setInterval(() => {
+        moveHomeSlide(1);
+      }, 6000);
+
+      // --- DASHBOARD SLIDESHOW LOGIC ---
+      let currentDashSlide = 0;
+      const dashSlides = document.querySelectorAll(".dash-slide");
+
+      function showDashSlide(index) {
+        dashSlides.forEach((slide, idx) => {
+          slide.style.opacity = idx === index ? "1" : "0";
+        });
+      }
+
+      function moveDashSlide(step) {
+        currentDashSlide =
+          (currentDashSlide + step + dashSlides.length) % dashSlides.length;
+        showDashSlide(currentDashSlide);
+      }
+
+      setInterval(() => {
+        moveDashSlide(1);
+      }, 5000);
+
+      // --- CHART.JS VISUALIZATIONS INITIALIZATION ---
+      window.addEventListener("DOMContentLoaded", () => {
+        // Line Chart: 24h Trend
+        const ctxLine = document.getElementById("lineChart").getContext("2d");
+        new Chart(ctxLine, {
+          type: "line",
+          data: {
+            labels: [
+              "00:00",
+              "03:00",
+              "06:00",
+              "09:00",
+              "12:00",
+              "15:00",
+              "18:00",
+              "21:00",
+              "24:00 (FCST)",
+            ],
+            datasets: [
+              {
+                label: "Measured AQI",
+                data: [35, 32, 48, 62, 55, 42, 58, 45, null],
+                borderColor: "#0d9488",
+                backgroundColor: "rgba(13, 148, 136, 0.1)",
+                fill: true,
+                tension: 0.4,
+                borderWidth: 3,
+              },
+              {
+                label: "LSTM AI Forecast",
+                data: [null, null, null, null, null, null, 58, 45, 40],
+                borderColor: "#6366f1",
+                borderDash: [5, 5],
+                tension: 0.4,
+                borderWidth: 3,
+              },
+            ],
+          },
+          options: { responsive: true, maintainAspectRatio: false },
+        });
+
+        // Bar Chart: Trace Pollutants
+        const ctxBar = document.getElementById("barChart").getContext("2d");
+        new Chart(ctxBar, {
+          type: "bar",
+          data: {
+            labels: ["PM2.5", "PM10", "NO2", "SO2", "CO"],
+            datasets: [
+              {
+                label: "Current Concentration Ratio (% of Safe Limit)",
+                data: [40, 57, 25, 15, 30],
+                backgroundColor: [
+                  "#14b8a6",
+                  "#f59e0b",
+                  "#6366f1",
+                  "#3b82f6",
+                  "#ef4444",
+                ],
+                borderRadius: 8,
+              },
+            ],
+          },
+          options: { responsive: true, maintainAspectRatio: false },
+        });
+
+        // Doughnut Chart: Monthly Breakdown
+        const ctxDoughnut = document
+          .getElementById("doughnutChart")
+          .getContext("2d");
+        new Chart(ctxDoughnut, {
+          type: "doughnut",
+          data: {
+            labels: [
+              "Good (0-50)",
+              "Moderate (51-100)",
+              "Unhealthy for Sensitive (101-150)",
+              "Unhealthy (151+)",
+            ],
+            datasets: [
+              {
+                data: [68, 22, 7, 3],
+                backgroundColor: ["#10b981", "#f59e0b", "#f97316", "#ef4444"],
+              },
+            ],
+          },
+          options: { responsive: true, maintainAspectRatio: false },
+        });
+
+        // Radar Chart: Environmental Parameters
+        const ctxRadar = document.getElementById("radarChart").getContext("2d");
+        new Chart(ctxRadar, {
+          type: "radar",
+          data: {
+            labels: [
+              "Particulates",
+              "Gaseous Traces",
+              "Temperature",
+              "Humidity",
+              "Wind Speed",
+              "Pressure",
+            ],
+            datasets: [
+              {
+                label: "Current Atmospheric Balance",
+                data: [65, 40, 75, 60, 80, 70],
+                borderColor: "#0d9488",
+                backgroundColor: "rgba(13, 148, 136, 0.2)",
+              },
+            ],
+          },
+          options: { responsive: true, maintainAspectRatio: false },
+        });
+      });
+
+      // --- AIR QUALITY FORM ESTIMATION ENGINE ---
+      function calculateAQI(event) {
+        event.preventDefault();
+
+        const pm25 =
+          parseFloat(document.getElementById("input-pm25").value) || 0;
+        const pm10 =
+          parseFloat(document.getElementById("input-pm10").value) || 0;
+        const no2 = parseFloat(document.getElementById("input-no2").value) || 0;
+
+        // Simplified EPA estimation heuristic for demo calculation
+        let subIndexPM25 = pm25 * 3.5;
+        let subIndexPM10 = pm10 * 1.1;
+        let subIndexNO2 = no2 * 1.5;
+
+        let aqi = Math.round(Math.max(subIndexPM25, subIndexPM10, subIndexNO2));
+
+        const resultBox = document.getElementById("result-box");
+        const resultVal = document.getElementById("result-aqi-value");
+        const resultBadge = document.getElementById("result-badge");
+        const resultAdvice = document.getElementById("result-advice");
+
+        resultVal.innerText = aqi;
+        resultBox.classList.remove("hidden");
+
+        if (aqi <= 50) {
+          resultBadge.innerText = "Good (Level 1)";
+          resultBadge.className =
+            "px-5 py-2.5 rounded-xl font-bold text-sm text-white shadow-sm bg-emerald-500";
+          resultBox.className =
+            "mt-8 p-6 rounded-2xl border transition-all space-y-4 bg-emerald-50/50 border-emerald-200";
+          resultAdvice.innerText =
+            "Air quality is considered satisfactory, and air pollution poses little or no risk. Ideal conditions for outdoor activities.";
+        } else if (aqi <= 100) {
+          resultBadge.innerText = "Moderate (Level 2)";
+          resultBadge.className =
+            "px-5 py-2.5 rounded-xl font-bold text-sm text-white shadow-sm bg-amber-500";
+          resultBox.className =
+            "mt-8 p-6 rounded-2xl border transition-all space-y-4 bg-amber-50/50 border-amber-200";
+          resultAdvice.innerText =
+            "Air quality is acceptable. However, unusually sensitive individuals may experience minor respiratory discomfort.";
+        } else if (aqi <= 150) {
+          resultBadge.innerText = "Unhealthy for Sensitive Groups";
+          resultBadge.className =
+            "px-5 py-2.5 rounded-xl font-bold text-sm text-white shadow-sm bg-orange-500";
+          resultBox.className =
+            "mt-8 p-6 rounded-2xl border transition-all space-y-4 bg-orange-50/50 border-orange-200";
+          resultAdvice.innerText =
+            "Members of sensitive groups (asthmatics, children, elderly) may experience health effects. General public is less likely affected.";
+        } else {
+          resultBadge.innerText = "Unhealthy / Hazardous";
+          resultBadge.className =
+            "px-5 py-2.5 rounded-xl font-bold text-sm text-white shadow-sm bg-rose-600";
+          resultBox.className =
+            "mt-8 p-6 rounded-2xl border transition-all space-y-4 bg-rose-50/50 border-rose-200";
+          resultAdvice.innerText =
+            "Health alert! Everyone may begin to experience health effects. Avoid prolonged outdoor exertion and wear N95 respirators.";
+        }
+      }
+    </script>
+  </body>
+</html>

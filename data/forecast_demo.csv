@@ -1,0 +1,9 @@
+timestamp,location,pm25,aqi,category
+2026-09-17 00:00:00,Kigali-Demo,20.1,68,Moderate
+2026-09-17 03:00:00,Kigali-Demo,23.4,74,Moderate
+2026-09-17 06:00:00,Kigali-Demo,32.0,93,Moderate
+2026-09-17 09:00:00,Kigali-Demo,36.5,104,Unhealthy for Sensitive Groups
+2026-09-17 12:00:00,Kigali-Demo,27.2,83,Moderate
+2026-09-17 15:00:00,Kigali-Demo,18.9,65,Moderate
+2026-09-17 18:00:00,Kigali-Demo,30.4,89,Moderate
+2026-09-17 21:00:00,Kigali-Demo,25.1,78,Moderate

@@ -1,0 +1,30 @@
+[
+  {
+    "model_name": "XGBoost",
+    "mae": 2.14,
+    "rmse": 3.02,
+    "r2_score": 0.91,
+    "status": "Selected"
+  },
+  {
+    "model_name": "LSTM",
+    "mae": 2.45,
+    "rmse": 3.38,
+    "r2_score": 0.88,
+    "status": "Candidate"
+  },
+  {
+    "model_name": "Prophet",
+    "mae": 3.82,
+    "rmse": 4.91,
+    "r2_score": 0.79,
+    "status": "Baseline"
+  },
+  {
+    "model_name": "ARIMA",
+    "mae": 4.15,
+    "rmse": 5.30,
+    "r2_score": 0.74,
+    "status": "Baseline"
+  }
+]

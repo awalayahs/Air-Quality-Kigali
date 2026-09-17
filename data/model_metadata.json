@@ -1,0 +1,15 @@
+{
+  "project_name": "Kigali Air Quality Forecasting",
+  "version": "1.0.0",
+  "target_variable": "PM2.5",
+  "data_source": "Kigali Sensor Network",
+  "trained_at": "2026-09-16T18:00:00Z",
+  "models_evaluated": ["XGBoost", "LSTM", "Prophet", "ARIMA"],
+  "selected_model": "XGBoost",
+  "hyperparameters": {
+    "n_estimators": 200,
+    "max_depth": 6,
+    "learning_rate": 0.05,
+    "subsample": 0.8
+  }
+}
