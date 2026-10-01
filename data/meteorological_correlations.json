@@ -1,0 +1,97 @@
+{
+  "title": "PM2.5 and Meteorological Relationships",
+  "n": 206,
+  "variables": [
+    {
+      "variable": "Radiation",
+      "label": "Solar radiation",
+      "r": -0.2511,
+      "p": 0.0003,
+      "unit": "W/m\u00b2",
+      "note": "Largest absolute marginal Pearson association; weak negative linear association."
+    },
+    {
+      "variable": "WindSpeed",
+      "label": "Wind speed",
+      "r": -0.1082,
+      "p": 0.1216,
+      "unit": "m/s",
+      "note": "Weak negative linear association; not significant at 5%."
+    },
+    {
+      "variable": "Temperature_lag1",
+      "label": "Temperature (1-day lag)",
+      "r": 0.0432,
+      "p": 0.5377,
+      "unit": "\u00b0C",
+      "note": "Very weak marginal association."
+    },
+    {
+      "variable": "Temperature",
+      "label": "Temperature",
+      "r": 0.0348,
+      "p": 0.619,
+      "unit": "\u00b0C",
+      "note": "Very weak marginal association."
+    },
+    {
+      "variable": "Humidity",
+      "label": "Humidity",
+      "r": 0.0348,
+      "p": 0.6196,
+      "unit": "%",
+      "note": "Very weak marginal association."
+    },
+    {
+      "variable": "Rain",
+      "label": "Rainfall",
+      "r": -0.0206,
+      "p": 0.7684,
+      "unit": "mm",
+      "note": "Very weak marginal association."
+    },
+    {
+      "variable": "Humidity_lag1",
+      "label": "Humidity (1-day lag)",
+      "r": -0.0016,
+      "p": 0.9816,
+      "unit": "%",
+      "note": "Essentially zero marginal association."
+    }
+  ],
+  "sarimax": {
+    "model": "SARIMAX(0,1,2)x(0,0,1,7)",
+    "observations": 206,
+    "significant_exogenous_variables": [
+      {
+        "variable": "Humidity",
+        "p": 0.0011,
+        "coefficient": 3.5533
+      },
+      {
+        "variable": "WindSpeed",
+        "p": 0.0472,
+        "coefficient": -0.5649
+      },
+      {
+        "variable": "Temperature_lag1",
+        "p": 0.0025,
+        "coefficient": -2.0315
+      },
+      {
+        "variable": "Humidity_lag1",
+        "p": 0.0004,
+        "coefficient": -3.1622
+      }
+    ],
+    "non_significant_variables": [
+      "Temperature",
+      "Rain",
+      "IsDrySeason"
+    ],
+    "rmse": null,
+    "mae": null,
+    "mape": null,
+    "note": "Supplementary association analysis only; the 206-day overlap is too short to make it a directly comparable primary forecasting model."
+  }
+}

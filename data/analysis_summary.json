@@ -1,0 +1,141 @@
+{
+  "study": {
+    "station": "Jali Station",
+    "location": "Kigali, Rwanda",
+    "air_quality_source": "REMA",
+    "air_quality_period": "2022-03-05 to 2024-02-29",
+    "air_quality_records": 8274,
+    "meteorology_source": "Meteo Rwanda",
+    "meteorology_period": "2023-08-07 to 2026-04-08",
+    "meteorology_records": 94672,
+    "overlap_days": 206,
+    "processed_daily_observations": 727
+  },
+  "historical": {
+    "mean": 22.25,
+    "std": 12.76,
+    "min": 2.64,
+    "median": 19.39,
+    "max": 61.83,
+    "q1": 13.43,
+    "q3": 27.86,
+    "raw_sensor_max": 3335.06,
+    "outlier_count_pm25": 75
+  },
+  "preprocessing": {
+    "missing_hourly_pm25": 1607,
+    "short_gap_limit_hours": 6,
+    "outlier_rule": "1.5\u00d7IQR capping before imputation",
+    "hourly_imputation": "linear interpolation for gaps \u22646 hours, then hour-of-day mean, then boundary interpolation",
+    "daily_aggregation": "daily mean with remaining daily-gap interpolation"
+  },
+  "temporal": {
+    "seasonal_period_days": 7,
+    "adf_original_p": 0.0509,
+    "adf_first_difference_p": 0.0001,
+    "summary": "The level series was borderline/non-stationary under the ADF test (p=0.0509); first differencing produced a stationary series (p<0.001). Weekly seasonality and dry-season elevation were investigated."
+  },
+  "evaluation": {
+    "train_days": 655,
+    "test_days": 72,
+    "train_period": "2022-03-05 to 2023-12-19",
+    "test_period": "2023-12-20 to 2024-02-29",
+    "selection_rule": "Lowest RMSE on the common 72-day test period."
+  },
+  "feature_importance": [
+    {
+      "feature": "lag1",
+      "random_forest": 0.9043,
+      "xgboost": 0.7042
+    },
+    {
+      "feature": "lag2",
+      "random_forest": 0.0331,
+      "xgboost": 0.045
+    },
+    {
+      "feature": "roll_mean7",
+      "random_forest": 0.0184,
+      "xgboost": 0.1133
+    },
+    {
+      "feature": "lag3",
+      "random_forest": 0.0166,
+      "xgboost": 0.0435
+    },
+    {
+      "feature": "month",
+      "random_forest": 0.0069,
+      "xgboost": 0.0446
+    },
+    {
+      "feature": "roll_mean14",
+      "random_forest": 0.0061,
+      "xgboost": 0.016
+    },
+    {
+      "feature": "lag7",
+      "random_forest": 0.005,
+      "xgboost": 0.0112
+    },
+    {
+      "feature": "lag14",
+      "random_forest": 0.0042,
+      "xgboost": 0.0087
+    },
+    {
+      "feature": "roll_std7",
+      "random_forest": 0.0041,
+      "xgboost": 0.0069
+    },
+    {
+      "feature": "dow",
+      "random_forest": 0.0011,
+      "xgboost": 0.0045
+    },
+    {
+      "feature": "is_weekend",
+      "random_forest": 0.0002,
+      "xgboost": 0.0022
+    }
+  ],
+  "native_7day_accuracy": [
+    {
+      "model": "XGBoost",
+      "RMSE": 6.28,
+      "MAE": 5.63,
+      "MAPE": 36.36
+    },
+    {
+      "model": "Random Forest",
+      "RMSE": 6.59,
+      "MAE": 6.0,
+      "MAPE": 38.3
+    },
+    {
+      "model": "SARIMA",
+      "RMSE": 7.38,
+      "MAE": 6.44,
+      "MAPE": 39.52
+    },
+    {
+      "model": "Seasonal Naive",
+      "RMSE": 7.69,
+      "MAE": 5.87,
+      "MAPE": 34.17
+    },
+    {
+      "model": "ARIMA",
+      "RMSE": 8.58,
+      "MAE": 7.72,
+      "MAPE": 48.57
+    },
+    {
+      "model": "Prophet",
+      "RMSE": 9.93,
+      "MAE": 8.89,
+      "MAPE": 55.68
+    }
+  ],
+  "robustness_note": "The 72-day test-period RMSE is the authoritative model-selection basis. The single native 7-day window is shown only as a diagnostic and is not used to overturn the selection."
+}

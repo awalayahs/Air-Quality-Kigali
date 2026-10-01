@@ -1,0 +1,38 @@
+[
+  {
+    "model": "XGBoost",
+    "RMSE": 6.28,
+    "MAE": 5.63,
+    "MAPE": 36.36
+  },
+  {
+    "model": "Random Forest",
+    "RMSE": 6.59,
+    "MAE": 6.0,
+    "MAPE": 38.3
+  },
+  {
+    "model": "SARIMA",
+    "RMSE": 7.38,
+    "MAE": 6.44,
+    "MAPE": 39.52
+  },
+  {
+    "model": "Seasonal Naive",
+    "RMSE": 7.69,
+    "MAE": 5.87,
+    "MAPE": 34.17
+  },
+  {
+    "model": "ARIMA",
+    "RMSE": 8.58,
+    "MAE": 7.72,
+    "MAPE": 48.57
+  },
+  {
+    "model": "Prophet",
+    "RMSE": 9.93,
+    "MAE": 8.89,
+    "MAPE": 55.68
+  }
+]
